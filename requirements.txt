@@ -22,7 +22,6 @@ networkx==3.1
 numpy==1.24.4
 Pillow==10.1.0
 platformdirs==4.0.0
-pyodbc==5.0.1
 python-dateutil==2.8.2
 pytz==2023.3.post1
 requests==2.31.0
