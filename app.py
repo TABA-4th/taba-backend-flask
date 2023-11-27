@@ -18,6 +18,7 @@ db_time = now.strftime('%Y-%m-%d %H:%M:%S')
 
 model_path = 'aram_fine_crust231109.pt'
 class_names = [0, 1, 2, 3]
+result = [-1, -1, -1, -1, -1, -1]
 
 app = Flask(__name__)
 
@@ -30,7 +31,12 @@ s3 = boto3.client(
 )
 
 # Model
-model = torch.load(model_path, map_location='cpu')
+model1 = torch.load(model_path, map_location='cpu')
+model2 = torch.load(model_path, map_location='cpu')
+model3 = torch.load(model_path, map_location='cpu')
+model4 = torch.load(model_path, map_location='cpu')
+model5 = torch.load(model_path, map_location='cpu')
+model6 = torch.load(model_path, map_location='cpu')
 
 # Preprocessing
 transform = transforms.Compose([
@@ -47,10 +53,15 @@ def transform_image(file_data):
 # Prediction
 def predict_image(input_tensor):
     with torch.no_grad():
-        outputs = model(input_tensor)
+        outputs = model1(input_tensor)
         _, predicted = torch.max(outputs, 1)
-        predicted_class = class_names[predicted[0]]
-    return predicted_class
+        result[0] = class_names[predicted[0]]
+        result[1] = class_names[predicted[0]]
+        result[2] = class_names[predicted[0]]
+        result[3] = class_names[predicted[0]]
+        result[4] = class_names[predicted[0]]
+        result[5] = class_names[predicted[0]]
+    return result
 
 
 @app.route('/', methods=['GET'])
@@ -74,7 +85,7 @@ def predict():
 
     # 이미지 예측
     input_tensor = transform_image(file_data)
-    predicted_class = predict_image(input_tensor)
+    result = predict_image(input_tensor)
 
     # DB에 결과 데이터 저장
     try:
@@ -97,7 +108,7 @@ def predict():
 
         # 사용자 ID, 모델 출력 결과, 날짜를 저장하는 쿼리
         sql = "INSERT INTO diagnosis_result (RESULT_ID, MEMBER_ID, DIAGNOSIS_DATE, FINE_DEAD_SKIN_CELLS, EXCESS_SEBUM, ERYTHEMA_BETWEEN_HAIR_FOLLICLES, DANDRUFF, HAIR_LOSS, ERYTHEMA_PUSTULES, IMAGE_URL) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        values = (result_id, member_id, db_time, predicted_class, predicted_class, predicted_class, predicted_class, predicted_class, predicted_class, image_url)
+        values = (result_id, member_id, db_time, result[0], result[1], result[2], result[3], result[4], result[5], image_url)
         curs.execute(sql, values)
     
         conn.commit()
@@ -106,7 +117,7 @@ def predict():
     except Exception as ex:
         print(ex)
     
-    return jsonify({'class': predicted_class, 'url': image_url, 'msg': 'Data saved to database successfully'})
+    return jsonify({'class': result, 'url': image_url, 'msg': 'Data saved to database successfully'})
 
 if __name__ == '__main__':
     app.run(debug=True)
