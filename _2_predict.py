@@ -1,4 +1,4 @@
-# predict.py
+# _2_predict.py
 import io
 import torch
 from torchvision import transforms
