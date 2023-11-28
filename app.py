@@ -29,12 +29,12 @@ image_analysis_api = api.namespace('analysis', description='AI 모델로 사용�
 
 @test_api.route('/')
 class Test(Resource):
-    def get():
+    def get(self):
         return jsonify({'msg': 'Response result message for test api.'})
 
 @image_analysis_api.route('/')
 class analysis(Resource):
-    def post():
+    def post(self):
 
         if 'file' not in request.files:
             return 'No file part', 400
