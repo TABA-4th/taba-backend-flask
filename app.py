@@ -1,7 +1,7 @@
 # main.py
 import io
 import re
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template, make_response
 from datetime import datetime
 from shared_data import Instance
 from _1_upload import upload
@@ -9,6 +9,7 @@ from _2_predict import predict
 from _3_db_save import db_save
 from config import AWS_S3_BUCKET_NAME, AWS_S3_BUCKET_REGION, AWS_ACCESS_KEY, AWS_SECRET_ACCESS_KEY
 from flask_restx import Api, Resource, reqparse
+from flask_cors import CORS
 
 # 전역변수 값
 Instance.now = datetime.now()
@@ -26,6 +27,7 @@ api = Api(app, version='0.1', title='타바 프로젝트 - AI 이미지 분석 �
           description='', docs='타바 프로젝트 - AI 이미지 분석 개발서버 Flask API 제공', doc='/api-docs')
 test_api = api.namespace('test', description='swagger test')
 image_analysis_api = api.namespace('analysis', description='AI 모델로 사용자 이미지 분석 및 이미지 업로드')
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @test_api.route('/')
 class Test(Resource):
@@ -39,6 +41,7 @@ class analysis(Resource):
         if 'file' not in request.files:
             return 'No file part', 400
         Instance.file_data = request.files['file'].read()
+        print(Instance.file_data)
         if not Instance.file_data:
             return 'No file data', 400
         

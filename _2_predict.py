@@ -11,7 +11,8 @@ def load_model(model_path):
 
 if Instance.model_path is not None:
     with open(Instance.model_path, 'rb') as f:
-        model1 = torch.load(io.BytesIO(f.read()), map_location='cpu')
+        # model1 = torch.load(io.BytesIO(f.read()), map_location='cpu')
+        model1 = torch.load('aram_fine_crust231109.pt', map_location='cpu')
         
 def predict():
     transform = transforms.Compose([

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>이미지 업로드 예제</title>
+</head>
+<body>
+
+  <h2>이미지 업로드</h2>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="imageInput" accept="image/*">
+    <button type="button" onclick="uploadImage()">업로드</button>
+  </form>
+
+  <script>
+    function uploadImage() {
+      let input = document.getElementById('imageInput');
+      let file = input.files[0];
+
+      if (file) {
+        let formData = new FormData();
+        formData.append('file', file);
+
+        axios.post('http://localhost:5000/analysis', formData)
+          .then(function(response) {
+            // 업로드 성공 시 실행할 코드
+            console.log('이미지 업로드 성공');
+          })
+          .catch(function(error) {
+            // 업로드 실패 시 실행할 코드
+            console.error('이미지 업로드 실패', error);
+          });
+      } else {
+        console.error('이미지를 선택해주세요.');
+      }
+    }
+  </script>
+
+</body>
+</html>
