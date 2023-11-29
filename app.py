@@ -36,7 +36,8 @@ app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 *1024
 api = Api(app, version='0.1', title='타바 프로젝트 - AI 이미지 분석 개발서버 Flask API',
           description='', docs='타바 프로젝트 - AI 이미지 분석 개발서버 Flask API 제공', doc='/api-docs')
 test_api = api.namespace('test', description='swagger test')
-image_analysis_api = api.namespace('analysis', description='AI 모델로 사용자 이미지 분석 및 이미지 업로드')
+image_analysis_api = api.namespace('image', description='AI 모델로 사용자 이미지 분석 및 이미지 업로드')
+survey_analysis_api = api.namespace('survey', description='사용자 설문 조사 분석 결과')
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @test_api.route('/')
@@ -45,7 +46,7 @@ class Test(Resource):
         return jsonify({'msg': 'Response result message for test api.'})
 
 @image_analysis_api.route('/')
-class analysis(Resource):
+class Image(Resource):
     def post(self):
         if 'file' not in request.files:
             return 'No file part', 400
@@ -64,11 +65,14 @@ class analysis(Resource):
 
         # DB에 결과 데이터 저장
         db_save()
-
-        # 동성, 동나이대 평균 반환
-        average()
         
         return jsonify({'class': Instance.result, 'url': Instance.image_url, 'msg': 'Data saved to database successfully'})
+
+@survey_analysis_api.route('/')
+class Survey(Resource):
+    def post(self):
+        # 동성, 동나이대 평균 반환
+        return average()
 
 if __name__ == '__main__':
     app.run(debug=True)
