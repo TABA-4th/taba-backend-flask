@@ -3,6 +3,7 @@
 class SharedData:
     def __init__(self):
         self.member_id = None           # 사용자 ID
+        self.member_nickname = None     # 사용자 닉네임
         self.member_age = None          # 사용자 나이
         self.member_gender = None       # 사용자 성별
         self.member_percentage = None   # 사용자 평균 대비 퍼센트
