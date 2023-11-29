@@ -56,7 +56,7 @@ class analysis(Resource):
         predict()
 
         # DB에 결과 데이터 저장
-        # db_save()
+        db_save()
         
         return jsonify({'class': Instance.result, 'url': Instance.image_url, 'msg': 'Data saved to database successfully'})
 
