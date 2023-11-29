@@ -4,6 +4,7 @@ class SharedData:
     def __init__(self):
         self.now = None
         self.member_id = None
+        self.member_nickname = None
         self.url_time = None
         self.db_time = None
         self.model_path = None
