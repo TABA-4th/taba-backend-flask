@@ -11,20 +11,29 @@
   <h2>이미지 업로드</h2>
 
   <form id="uploadForm" enctype="multipart/form-data">
-    <input type="file" id="imageInput" accept="image/*">
+    <input type="file" id="imageInput" accept="image/*" onchange="setThumbnail(event);">
     <button type="button" onclick="uploadImage()">업로드</button>
   </form>
 
+  <div id="image_container"></div>
+
   <script>
+    // 이미지 업로드
     function uploadImage() {
       let input = document.getElementById('imageInput');
       let file = input.files[0];
+      let nickname = sessionStorage.getItem('nickname');
 
       if (file) {
         let formData = new FormData();
         formData.append('file', file);
+        formData.append('nickname', nickname)
 
-        axios.post('http://localhost:5000/analysis', formData)
+        axios.post('http://localhost:5000/analysis', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
           .then(function(response) {
             // 업로드 성공 시 실행할 코드
             console.log('이미지 업로드 성공');
@@ -36,6 +45,19 @@
       } else {
         console.error('이미지를 선택해주세요.');
       }
+    }
+
+    // 이미지 업로드 미리보기
+    function setThumbnail(event) {
+        let reader = new FileReader();
+
+        reader.onload = function(event) {
+          let img = document.createElement("img");
+          img.setAttribute("src", event.target.result);
+          document.querySelector("div#image_container").appendChild(img);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
     }
   </script>
 
