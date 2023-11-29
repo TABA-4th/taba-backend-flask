@@ -9,10 +9,6 @@ from shared_data import Instance
 def load_model(model_path):
     return torch.load(model_path, map_location=torch.device('cpu'))  # map_location 변경
 
-if Instance.model_path is not None:
-    with open(Instance.model_path, 'rb') as f:
-        model1 = torch.load(io.BytesIO(f.read()), map_location='cpu')
-        
 def predict():
     transform = transforms.Compose([
         transforms.Resize([224, 224]),
@@ -25,6 +21,11 @@ def predict():
     image = Image.open(file_data_buffer).convert('RGB')
     
     input_tensor = transform(image).unsqueeze(0)
+
+    # 우선 테스트로 미세각질 model1만 가동
+    if Instance.model_path is not None:
+        with open(Instance.model_path, 'rb') as f:
+            model1 = torch.load(io.BytesIO(f.read()), map_location='cpu')
     
     with torch.no_grad():
         outputs = model1(input_tensor)

@@ -19,6 +19,12 @@ def db_save():
         max_result_id_query = "SELECT MAX(RESULT_ID) FROM diagnosis_result;"
         curs.execute(max_result_id_query)
         max_result_id = curs.fetchone()[0]
+
+        # 사용자 닉네임에 해당하는 member_id 찾기
+        curs.execute("""SELECT MEMBER_ID 
+                                  FROM MEMBER 
+                                  WHERE NICKNAME = ? ;""", Instance.member_nickname)
+        Instance.member_id = curs.fetchone()[0]
     
         # result_id 1 증가
         result_id = max_result_id + 1 if max_result_id is not None else 1
