@@ -13,7 +13,7 @@ from flask_cors import CORS
 
 # 전역변수 값
 Instance.now = datetime.now()
-Instance.member_id = 4  # 임시로 4로 설정
+# Instance.member_id = 4  # 임시로 4로 설정
 Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
 Instance.db_time = Instance.now.strftime('%Y-%m-%d %H:%M:%S')
 Instance.model_path = 'aram_fine_crust231109.pt'
@@ -21,8 +21,11 @@ Instance.class_names = [0, 1, 2, 3]
 Instance.result = [-1, -1, -1, -1, -1, -1]
 Instance.image_url = ''
 Instance.file_data = ''
+Instance.member_nickname = ''
 
 app = Flask(__name__)
+# 최대 8MB로 파일 업로드 용량 제한
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 *1024
 api = Api(app, version='0.1', title='타바 프로젝트 - AI 이미지 분석 개발서버 Flask API',
           description='', docs='타바 프로젝트 - AI 이미지 분석 개발서버 Flask API 제공', doc='/api-docs')
 test_api = api.namespace('test', description='swagger test')
@@ -37,13 +40,14 @@ class Test(Resource):
 @image_analysis_api.route('/')
 class analysis(Resource):
     def post(self):
-
         if 'file' not in request.files:
             return 'No file part', 400
+        
         Instance.file_data = request.files['file'].read()
-        print(Instance.file_data)
         if not Instance.file_data:
             return 'No file data', 400
+
+        Instance.member_nickname = request.form['nickname']
         
         # S3에 이미지 업로드
         upload()
@@ -52,7 +56,7 @@ class analysis(Resource):
         predict()
 
         # DB에 결과 데이터 저장
-        db_save()
+        # db_save()
         
         return jsonify({'class': Instance.result, 'url': Instance.image_url, 'msg': 'Data saved to database successfully'})
 
