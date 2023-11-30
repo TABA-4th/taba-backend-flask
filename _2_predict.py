@@ -9,7 +9,7 @@ from shared_data import Instance
 def load_model(model_path):
     return torch.load(model_path, map_location=torch.device('cpu'))  # map_location 변경
 
-def predict():
+def predict(idx):
     transform = transforms.Compose([
         transforms.Resize([224, 224]),
         transforms.ToTensor(),
@@ -22,14 +22,14 @@ def predict():
     
     input_tensor = transform(image).unsqueeze(0)
 
-    # 우선 테스트로 미세각질 model1만 가동
-    if Instance.model_path is not None:
-        with open(Instance.model_path, 'rb') as f:
-            model1 = torch.load(io.BytesIO(f.read()), map_location='cpu')
+    # idx에 해당하는 모델 가동
+    x = getattr(Instance, f"model_path{idx}")
+    if x is not None:
+        with open(x, 'rb') as f:
+            scalp_analysis_model = torch.load(io.BytesIO(f.read()), map_location='cpu')
     
     with torch.no_grad():
-        outputs = model1(input_tensor)
+        outputs = scalp_analysis_model(input_tensor)
         _, predicted = torch.max(outputs, 1)
-        for i in range(len(Instance.result)):
-            Instance.result[i] = predicted[0].item()
+        Instance.result[idx] = predicted[0].item()
 

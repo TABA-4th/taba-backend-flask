@@ -26,9 +26,14 @@ Instance.now = datetime.now()   # 현재 시간
 Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
 Instance.db_time = Instance.now.strftime('%Y-%m-%d %H:%M:%S')
 
-Instance.model_path = 'aram_fine_crust231109.pt'    # 모델 경로
-Instance.class_names = [0, 1, 2, 3]                 # 예측 클래스 이름(0,1,2,3)
-Instance.result = [-1, -1, -1, -1, -1, -1]          # 예측 결과
+Instance.model_path0 = 'fine_crust_71.pt'                               # 모델 경로
+Instance.model_path1 = 'excess_sebum_69.pt'                             # 모델 경로
+Instance.model_path2 = 'erythema_between_hair_follicles_79.pt'          # 모델 경로
+Instance.model_path3 = 'dandruff_77.pt'                                 # 모델 경로
+Instance.model_path4 = 'hair_loss_79.pt'                                # 모델 경로
+Instance.model_path5 = 'erythema_pustules_76.pt'                        # 모델 경로
+Instance.class_names = [0, 1, 2, 3]                                     # 예측 클래스 이름(0,1,2,3)
+Instance.result = [-1, -1, -1, -1, -1, -1]                              # 예측 결과
 
 app = Flask(__name__)
 # 최대 8MB로 파일 업로드 용량 제한
@@ -61,7 +66,8 @@ class Image(Resource):
         upload()
 
         # 이미지 예측
-        predict()
+        for i in range(6):
+            predict(i)
 
         # DB에 결과 데이터 저장
         db_save()
