@@ -180,3 +180,14 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/flask
+
+# AI Model
+fine_crust_71.pt
+excess_sebum_69.pt
+erythema_between_hair_follicles_79.pt
+dandruff_77.pt
+hair_loss_79.pt
+erythema_pustules_76.pt
+
+# Survey
+average_df.pkl
