@@ -1,13 +1,9 @@
-# _2_predict.py
 import io
 import torch
 from torchvision import transforms
 from PIL import Image
 from shared_data import Instance
-
-# 이전에 model1, model2, ..., model6를 로드하던 부분을 함수로 변경
-def load_model(model_path):
-    return torch.load(model_path, map_location=torch.device('cpu'))  # map_location 변경
+from efficientnet_pytorch import EfficientNet
 
 def predict(idx):
     transform = transforms.Compose([
@@ -22,14 +18,22 @@ def predict(idx):
     
     input_tensor = transform(image).unsqueeze(0)
 
+    # 모델 구조 생성
+    model = EfficientNet.from_name('efficientnet-b0') 
+    model._fc = torch.nn.Linear(model._fc.in_features, 4)
+
+
     # idx에 해당하는 모델 가동
     x = getattr(Instance, f"model_path{idx}")
     if x is not None:
         with open(x, 'rb') as f:
-            scalp_analysis_model = torch.load(io.BytesIO(f.read()), map_location='cpu')
-    
+            model.load_state_dict(torch.load(io.BytesIO(f.read()), map_location='cpu'))
+
+    # 모델을 평가 모드로 설정
+    model.eval()
+
+    # 예측 수행
     with torch.no_grad():
-        outputs = scalp_analysis_model(input_tensor)
+        outputs = model(input_tensor)
         _, predicted = torch.max(outputs, 1)
         Instance.result[idx] = predicted[0].item()
-
