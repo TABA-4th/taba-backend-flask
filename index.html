@@ -29,7 +29,7 @@
         formData.append('file', file);
         formData.append('nickname', nickname)
 
-        axios.post('http://localhost:5000/analysis', formData, {
+        axios.post('http://localhost:5000/image', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
