@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <title>이미지 업로드 예제</title>
+</head>
+<body>
+
+  <h2>설문조사 업로드</h2>
+
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="text" id="gender" placeholder="남자/여자"><br/>
+    <input type="text" id="old" placeholder="10대미만 10대 20대 .."><br/>
+    <input type="text" id="use_age_term" placeholder="샴푸 사용빈도"><br/>
+    <input type="text" id="perm_term" placeholder="파마 주기"><br/>
+    <input type="text" id="dye_term" placeholder="염색 주기"><br/>
+    <input type="text" id="recommend_or_not" placeholder="추천받는다면 1, 아니면 0 입력"><br/>
+    <button type="button" onclick="upload()">업로드</button>
+  </form>
+
+  <div id="image_container"></div>
+
+  <script>
+    // 이미지 업로드
+    function upload() {
+      let nickname = sessionStorage.getItem('nickname');
+
+      let formData = new FormData();
+      formData.append('nickname', nickname);
+      formData.append('gender', document.getElementById('gender').value);
+      formData.append('old', document.getElementById('old').value);
+      formData.append('use_age_term', document.getElementById('use_age_term').value);
+      formData.append('perm_term', document.getElementById('perm_term').value);
+      formData.append('dye_term', document.getElementById('dye_term').value);
+      formData.append('recommend_or_not', document.getElementById('recommend_or_not').value);
+  
+      axios.post('http://localhost:5000/survey', formData, {
+      })
+          .then(function(response) {
+          // 업로드 성공 시 실행할 코드
+          console.log('설문 조사 업로드 성공');
+          })
+          .catch(function(error) {
+          // 업로드 실패 시 실행할 코드
+          console.error('설문 조사 업로드 실패', error);
+          });
+      }
+  </script>
+
+</body>
+</html>

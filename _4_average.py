@@ -7,8 +7,9 @@ from shared_data import Instance
 # 1. 성별           # ['남자', '여자']
 # 2. 연령대         # ['10대미만','10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대']
 # 3. 샴푸 사용빈도
-# 4. 염색 주기
-# 5. 제품 추천 동의
+# 4. 파마 주기
+# 5. 염색 주기
+# 6. 제품 추천 동의
 
 def average():
     with open( "average_df.pkl", "rb" ) as file:
@@ -29,16 +30,18 @@ def average():
         y = member_sum
         Instance.member_percentage = ((y - x) / abs(x)) * 100
         z = Instance.member_percentage
+        print("평균", x," 사용자", z)
+        print(Instance.result)
         
         # 결과 출력
         if z > 0:
-            return jsonify({f"평균보다 {z:.2f}% 안좋습니다."})
+            return jsonify({ 'result' : f"평균보다 {z:.2f}% 안좋습니다." })
         elif z < 0:
-            return jsonify({f"평균보다 {(z*(-1)):.2f}% 좋습니다."})
+            return jsonify({ 'result' : f"평균보다 {(z*(-1)):.2f}% 좋습니다." })
         else:
-            return jsonify({f"평균과 동일합니다."})  
+            return jsonify({ 'result' : f"평균과 동일합니다." })  
     else:
-        return jsonify({f"데이터를 찾을 수 없습니다."})
+        return jsonify({ 'result' : f"데이터를 찾을 수 없습니다." })
 
 
 
