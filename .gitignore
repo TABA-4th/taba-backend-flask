@@ -189,5 +189,12 @@ dandruff_77.pt
 hair_loss_79.pt
 erythema_pustules_76.pt
 
+fine_crust_0.6024.pt
+excess_sebum_0.6612.pt
+erythema_between_hair_follicles_0.7573.pt
+dandruff_0.7468.pt
+hair_loss_0.7712.pt
+erythema_pustules_0.7234.pt
+
 # Survey
 average_df.pkl
