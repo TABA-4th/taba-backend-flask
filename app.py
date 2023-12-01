@@ -31,13 +31,13 @@ Instance.now = datetime.now()   # 현재 시간
 Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
 Instance.db_time = Instance.now.strftime('%Y-%m-%d %H:%M:%S')
 
-Instance.model_path0 = 'fine_crust_71.pt'                               # 모델 경로
-Instance.model_path1 = 'excess_sebum_69.pt'                             # 모델 경로
-Instance.model_path2 = 'erythema_between_hair_follicles_79.pt'          # 모델 경로
-Instance.model_path3 = 'dandruff_77.pt'                                 # 모델 경로
-Instance.model_path4 = 'hair_loss_79.pt'                                # 모델 경로
-Instance.model_path5 = 'erythema_pustules_76.pt'                        # 모델 경로
-Instance.class_names = [0, 1, 2, 3]                                     # 예측 클래스 이름(0,1,2,3)
+Instance.model_path0 = 'fine_crust_0.6024.pt'                               # 모델 경로
+Instance.model_path1 = 'excess_sebum_0.6612.pt'                             # 모델 경로
+Instance.model_path2 = 'erythema_between_hair_follicles_0.7573.pt'          # 모델 경로
+Instance.model_path3 = 'dandruff_0.7468.pt'                                 # 모델 경로
+Instance.model_path4 = 'hair_loss_0.7712.pt'                                # 모델 경로
+Instance.model_path5 = 'erythema_pustules_0.7234.pt'                        # 모델 경로
+Instance.class_names = [0, 1, 2, 3]                                     # 예측 클래스 이름 (0,1,2,3)
 Instance.result = [-1, -1, -1, -1, -1, -1]                              # 예측 결과
 
 app = Flask(__name__)
