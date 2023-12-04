@@ -9,15 +9,16 @@ from _2_predict import predict
 from _3_db_save_image import db_save_image
 from _4_average import average
 from _5_db_save_survey import db_save_survey
+from _6_product import product
 from config import AWS_S3_BUCKET_NAME, AWS_S3_BUCKET_REGION, AWS_ACCESS_KEY, AWS_SECRET_ACCESS_KEY
 from flask_restx import Api, Resource, reqparse
 from flask_cors import CORS
 
 # 전역변수 값 설정 
-Instance.member_id = 4                  # 사용자 아이디, 임시값 
+Instance.member_id = 4                  # 사용자 아이디, 임시값 4s
 Instance.member_nickname = ''           # 사용자 닉네임 초기화
 Instance.member_age = 20                # 사용자 나이, 임시값 20
-Instance.member_gender = '남자'         # 사용자 성별, 임시값 남자
+Instance.member_gender = '남자'          # 사용자 성별, 임시값 남자
 Instance.member_use_age_term = ''       # 사용자 샴푸 사용 빈도
 Instance.member_perm_term = ''          # 사용자 파마 빈도
 Instance.member_dye_term = ''           # 사용자 염색 빈도
@@ -37,8 +38,8 @@ Instance.model_path2 = 'erythema_between_hair_follicles_0.7573.pt'          # �
 Instance.model_path3 = 'dandruff_0.7468.pt'                                 # 모델 경로
 Instance.model_path4 = 'hair_loss_0.7712.pt'                                # 모델 경로
 Instance.model_path5 = 'erythema_pustules_0.7234.pt'                        # 모델 경로
-Instance.class_names = [0, 1, 2, 3]                                     # 예측 클래스 이름 (0,1,2,3)
-Instance.result = [-1, -1, -1, -1, -1, -1]                              # 예측 결과
+Instance.class_names = [0, 1, 2, 3]                                         # 예측 클래스 이름(0,1,2,3)
+Instance.result = [-1, -1, -1, -1, -1, -1]                                  # 예측 결과
 
 app = Flask(__name__)
 # 최대 8MB로 파일 업로드 용량 제한
@@ -64,7 +65,7 @@ class Image(Resource):
         Instance.file_data = request.files['file'].read()
         if not Instance.file_data:
             return 'No file data', 400
-
+        
         Instance.member_nickname = request.form['nickname']
         if not Instance.member_nickname:
             return 'No member_nickname data', 400
@@ -76,10 +77,20 @@ class Image(Resource):
         for i in range(6):
             predict(i)
 
+        # 제품 타입 2가지
+        product()
+
         # DB에 결과 데이터 저장
         db_save_image()
         
-        return jsonify({'class': Instance.result, 'url': Instance.image_url, 'msg': 'Data saved to database successfully'})
+        return jsonify({'class': Instance.result, 'url': Instance.image_url, 'msg': 'Data saved to database successfully',
+                            "dry": Instance.effect1 == "dry" or Instance.effect2 == "dry",
+                            "greasy": Instance.effect1 == "greasy" or Instance.effect2 == "greasy",
+                            "sensitive": Instance.effect1 == "sensitive" or Instance.effect2 == "sensitive",
+                            "dermatitis": Instance.effect1 == "dermatitis" or Instance.effect2 == "dermatitis",
+                            "neutral": Instance.effect1 == "neutral" or Instance.effect2 == "neutral",
+                            "loss": Instance.effect1 == "loss" or Instance.effect2 == "loss"
+                        })
 
 @survey_analysis_api.route('/')
 class Survey(Resource):
