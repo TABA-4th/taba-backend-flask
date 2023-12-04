@@ -28,4 +28,7 @@ class SharedData:
         self.class_names = None             # 예측 클래스 이름(0,1,2,3)
         self.result = None                  # 예측 결과
 
+        self.effect1 = None                 # 제품타입1
+        self.effect2 = None                 # 제품타입2
+
 Instance = SharedData()
