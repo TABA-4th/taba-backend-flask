@@ -18,7 +18,7 @@ from shared_data import Instance
     # 탈모     : 0.25
     # 홍반농포  : 0.15
 
-    # 미세각질->지성,중성,건성
+    # 미세각질->중성,건성
     # 피지과다->지성,피부염성
     # 모낭홍반->피부염성, 민감성
     # 비듬->지성,건성,중성
@@ -29,11 +29,15 @@ from shared_data import Instance
 # 2. 상위 2개 제품 기능 추출
 # 3. 알맞는 제품 추천 - db에서 가져오기
 
+def get_key(dict, val):
+    for key, value in dict.items():
+        if val == value:
+            return key
+
+
 def product():
-
-
     effect = {'dry': 0, 'greasy': 1, 'loss': 2, 'neutral': 3, 'sensitive': 4, 'dermatitis': 5} # 제품 타입 딕셔너리
-    w = [0.15, 0.15, 0.15, 0.15, 0.15, 0.15] # 각 지표 별 가중치: [미세각질, 피지과다, 모낭홍반, 비듬, 탈모, 홍반농포]
+    w = [0.15, 0.15, 0.15, 0.15, 0.25, 0.15] # 각 지표 별 가중치: [미세각질, 피지과다, 모낭홍반, 비듬, 탈모, 홍반농포]
     type_score = [0, 0, 0, 0, 0, 0]    # 최종 제품 타입 점수: [건성, 지성, 탈모성, 중성, 민감성, 피부염성]
 
     for i in range(len(w)):
@@ -41,7 +45,7 @@ def product():
 
     # 행 - 사용자 지표: [미세각질, 피지과다, 모낭홍반, 비듬, 탈모, 홍반농포]
     # 열 - 제품 타입: [건성, 지성, 탈모성, 중성, 민감성, 피부염성]
-    correspond = [[1, 1, 0, 1, 0, 0],
+    correspond = [[1, 0, 0, 1, 0, 0],
                 [0, 1, 0, 0, 0, 1],
                 [0, 0, 0, 0, 1, 1],
                 [1, 1, 0, 1, 0, 0],
@@ -60,5 +64,5 @@ def product():
     rec1, rec2 = top_indices[0], top_indices[1]
 
     # Map the indices to the correspondesponding effect keys
-    Instance.effect1 = effect.get(rec1)
-    Instance.effect2 = effect.get(rec2)
+    Instance.effect1 = get_key(effect, rec1)
+    Instance.effect2 = get_key(effect, rec2)
