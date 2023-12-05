@@ -1,6 +1,7 @@
 # _3_db_save_image.py
 import pyodbc
 from datetime import datetime
+from pytz import timezone
 from config import user, passwd
 from shared_data import Instance
 
@@ -28,6 +29,9 @@ def db_save_image():
     
         # result_id 1 증가
         result_id = max_result_id + 1 if max_result_id is not None else 1
+
+        # 현재 시간
+        Instance.now = datetime.now(timezone('Asia/Seoul'))
 
         # 사용자 ID, 모델 출력 결과, 날짜를 저장하는 쿼리
         sql = "INSERT INTO diagnosis_result (RESULT_ID, MEMBER_ID, DIAGNOSIS_DATE, FINE_DEAD_SKIN_CELLS, EXCESS_SEBUM, ERYTHEMA_BETWEEN_HAIR_FOLLICLES, DANDRUFF, HAIR_LOSS, ERYTHEMA_PUSTULES, IMAGE_URL) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
