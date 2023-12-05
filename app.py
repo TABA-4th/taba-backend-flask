@@ -3,6 +3,7 @@ import io
 import re
 from flask import Flask, jsonify, request, render_template, make_response
 from datetime import datetime
+from pytz import timezone
 from shared_data import Instance
 from _1_upload import upload
 from _2_predict import predict
@@ -27,10 +28,6 @@ Instance.member_percentage = 0          # 사용자 평균 대비 퍼센트
 
 Instance.file_data = ''         # 사용자가 업로드한 이미지 데이터
 Instance.image_url = ''         # S3에 저장한 이미지 URL
-
-Instance.now = datetime.now()   # 현재 시간
-Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
-Instance.db_time = Instance.now.strftime('%Y-%m-%d %H:%M:%S')
 
 Instance.model_path0 = 'fine_crust_0.6024.pt'                               # 모델 경로
 Instance.model_path1 = 'excess_sebum_0.6612.pt'                             # 모델 경로
@@ -70,6 +67,11 @@ class Image(Resource):
         if not Instance.member_nickname:
             return 'No member_nickname data', 400
         
+        # 현재 시간
+        # TODO : survey랑 image 연결되면 아래 Instance.now 지우기 (같은 시간대가 되도록)
+        Instance.now = datetime.now(timezone('Asia/Seoul'))
+        Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
+
         # S3에 이미지 업로드
         upload()
 
@@ -122,6 +124,9 @@ class Survey(Resource):
         Instance.member_recommend_or_not = request.form['recommend_or_not']
         if not Instance.member_recommend_or_not:
             return 'No member_recommend_or_not data', 400
+        
+        # 현재 시간
+        Instance.now = datetime.now(timezone('Asia/Seoul'))
         
         # DB에 결과 데이터 저장
         db_save_survey()

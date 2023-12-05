@@ -29,6 +29,9 @@ def db_save_survey():
         # result_id 1 증가
         survey_id = max_survey_id + 1 if max_survey_id is not None else 1
 
+        # db에 저장할 시간
+        Instance.db_time = Instance.now.strftime('%Y-%m-%d %H:%M:%S')
+
         # 사용자 ID, 설문 조사 결과, 날짜를 저장하는 쿼리
         sql = "INSERT INTO member_survey (SURVEY_ID, MEMBER_ID, SURVEY_DATE, GENDER, OLD, USE_AGE_TERM, PERM_TERM, DYE_TERM, RECOMMEND_OR_NOT) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         values = (survey_id, Instance.member_id, Instance.db_time, Instance.member_gender, Instance.member_age, Instance.member_use_age_term, Instance.member_perm_term, Instance.member_dye_term, Instance.member_recommend_or_not)
