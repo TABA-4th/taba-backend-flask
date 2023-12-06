@@ -3,6 +3,15 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from shared_data import Instance
+import torchvision.transforms.functional as TF
+
+def random_transforms(tensor):
+    # 사용자 정의 변환 함수
+    if torch.rand(1) < 0.5:
+        tensor = TF.adjust_gamma(tensor, gamma=0.9, gain=1)
+    if torch.rand(1) < 0.5:
+        tensor = TF.adjust_hue(tensor, hue_factor=-0.05)
+    return tensor
 
 def predict(idx):
     transform = transforms.Compose([
