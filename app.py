@@ -8,7 +8,7 @@ from shared_data import Instance
 from _1_upload import upload
 from _2_predict import predict
 from _3_db_save_image import db_save_image
-from _4_average import average
+from _4_percentile import percentile
 from _5_db_save_survey import db_save_survey
 from _6_product import product
 from config import AWS_S3_BUCKET_NAME, AWS_S3_BUCKET_REGION, AWS_ACCESS_KEY, AWS_SECRET_ACCESS_KEY
@@ -16,25 +16,26 @@ from flask_restx import Api, Resource, reqparse
 from flask_cors import CORS
 
 # 전역변수 값 설정 
-Instance.member_id = 4                  # 사용자 아이디, 임시값 4s
-Instance.member_nickname = ''           # 사용자 닉네임 초기화
-Instance.member_age = 20                # 사용자 나이, 임시값 20
-Instance.member_gender = '남자'          # 사용자 성별, 임시값 남자
-Instance.member_use_age_term = ''       # 사용자 샴푸 사용 빈도
-Instance.member_perm_term = ''          # 사용자 파마 빈도
-Instance.member_dye_term = ''           # 사용자 염색 빈도
-Instance.member_recommend_or_not = ''   # 사용자 제품 추천 여부
-Instance.member_percentage = 0          # 사용자 평균 대비 퍼센트
+Instance.member_id = 4                                                      # 사용자 아이디, 임시값 4s
+Instance.member_nickname = ''                                               # 사용자 닉네임 초기화
+Instance.member_age = 20                                                    # 사용자 나이, 임시값 20
+Instance.member_gender = '남자'                                              # 사용자 성별, 임시값 남자
+Instance.member_use_age_term = ''                                           # 사용자 샴푸 사용 빈도
+Instance.member_perm_term = ''                                              # 사용자 파마 빈도
+Instance.member_dye_term = ''                                               # 사용자 염색 빈도
+Instance.member_recommend_or_not = ''                                       # 사용자 제품 추천 여부
+Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                       # 사용자 평균 대비 퍼센트 [합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
 
-Instance.file_data = ''         # 사용자가 업로드한 이미지 데이터
-Instance.image_url = ''         # S3에 저장한 이미지 URL
+Instance.file_data = ''                                                     # 사용자가 업로드한 이미지 데이터
+Instance.image_url = ''                                                     # S3에 저장한 이미지 URL
 
-Instance.model_path0 = 'fine_crust_0.6024.pt'                               # 모델 경로
-Instance.model_path1 = 'excess_sebum_0.6612.pt'                             # 모델 경로
-Instance.model_path2 = 'erythema_between_hair_follicles_0.7573.pt'          # 모델 경로
-Instance.model_path3 = 'dandruff_0.7468.pt'                                 # 모델 경로
-Instance.model_path4 = 'hair_loss_0.7712.pt'                                # 모델 경로
-Instance.model_path5 = 'erythema_pustules_0.7234.pt'                        # 모델 경로
+Instance.model_path0 = 'fine_crust_0.6024.pt'                               # 모델 경로: 미세 각질
+Instance.model_path1 = 'excess_sebum_0.6612.pt'                             # 모델 경로: 피지 과다
+Instance.model_path2 = 'erythema_between_hair_follicles_0.7573.pt'          # 모델 경로: 모낭 사이 홍반
+Instance.model_path3 = 'erythema_pustules_0.7234.pt'                        # 모델 경로: 모낭 홍반 농포
+Instance.model_path4 = 'dandruff_0.7468.pt'                                 # 모델 경로: 비듬
+Instance.model_path5 = 'hair_loss_0.7712.pt'                                # 모델 경로: 탈모
+
 Instance.class_names = [0, 1, 2, 3]                                         # 예측 클래스 이름(0,1,2,3)
 Instance.result = [-1, -1, -1, -1, -1, -1]                                  # 예측 결과
 
@@ -131,8 +132,11 @@ class Survey(Resource):
         # DB에 결과 데이터 저장
         db_save_survey()
 
-        # 동성, 동나이대 평균 반환
-        return average()
+        # 동성, 동나이대 대비 백분위 계산
+        percentile()
+
+        # 합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모
+        return jsonify({'total': f"합계:{Instance.member_percentile[0]}", 'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"})
 
 if __name__ == '__main__':
     app.run(debug=True)
