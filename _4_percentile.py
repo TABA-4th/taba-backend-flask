@@ -16,9 +16,9 @@ from scipy.stats import norm
 
 raw_score = [-1, -1, -1, -1, -1, -1, -1]        # 원점수: [합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
 
-raw_score[0] = sum(map(int, Instance.result))   # 합계
+raw_score[0] = sum(map(float, Instance.result))   # 합계
 for i in range(6):                              # 1, 2, 3, 4, 5, 6번째 지표
-    raw_score[i+1] = int(Instance.result[i])
+    raw_score[i+1] = float(Instance.result[i])
 
 # 사용자 입력값 파싱
 age_dict = {'0대': 0, '10대': 10, '20대': 20, '30대': 30, '40대': 40, '50대': 50, '60대': 60, '70대': 70, '80대': 80}
