@@ -69,8 +69,6 @@ class Image(Resource):
             return 'No member_nickname data', 400
         
         # 현재 시간
-        # TODO : survey랑 image 연결되면 아래 Instance.now 지우기 (같은 시간대가 되도록)
-        Instance.now = datetime.now(timezone('Asia/Seoul'))
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
 
         # S3에 이미지 업로드
@@ -79,6 +77,9 @@ class Image(Resource):
         # 이미지 예측
         for i in range(6):
             predict(i)
+        
+        # 동성, 동나이대 대비 백분위 계산
+        percentile()
 
         # 제품 타입 2가지
         product()
@@ -92,7 +93,15 @@ class Image(Resource):
                             "sensitive": Instance.effect1 == "sensitive" or Instance.effect2 == "sensitive",
                             "dermatitis": Instance.effect1 == "dermatitis" or Instance.effect2 == "dermatitis",
                             "neutral": Instance.effect1 == "neutral" or Instance.effect2 == "neutral",
-                            "loss": Instance.effect1 == "loss" or Instance.effect2 == "loss"
+                            "loss": Instance.effect1 == "loss" or Instance.effect2 == "loss",
+
+                            'total': f"합계:{Instance.member_percentile[0]}", 
+                            'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",
+                            'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 
+                            'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 
+                            'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 
+                            'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 
+                            'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"
                         })
 
 @survey_analysis_api.route('/')
@@ -133,10 +142,10 @@ class Survey(Resource):
         db_save_survey()
 
         # 동성, 동나이대 대비 백분위 계산
-        percentile()
+        # percentile()
 
         # 합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모
-        return jsonify({'total': f"합계:{Instance.member_percentile[0]}", 'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"})
+        # return jsonify({'total': f"합계:{Instance.member_percentile[0]}", 'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"})
 
 if __name__ == '__main__':
     app.run(debug=True)
