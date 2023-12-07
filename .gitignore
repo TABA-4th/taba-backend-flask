@@ -182,19 +182,12 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/flask
 
 # AI Model
-fine_crust_71.pt
-excess_sebum_69.pt
-erythema_between_hair_follicles_79.pt
-dandruff_77.pt
-hair_loss_79.pt
-erythema_pustules_76.pt
-
-fine_crust_0.6024.pt
-excess_sebum_0.6612.pt
-erythema_between_hair_follicles_0.7573.pt
-dandruff_0.7468.pt
-hair_loss_0.7712.pt
-erythema_pustules_0.7234.pt
+fine_crust.pt
+excess_sebum.pt
+erythema_between_hair_follicles.pt
+dandruff.pt
+hair_loss.pt
+erythema_pustules.pt
 
 # Survey
 average_df.pkl

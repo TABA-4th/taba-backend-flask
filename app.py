@@ -29,12 +29,12 @@ Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                       # �
 Instance.file_data = ''                                                     # 사용자가 업로드한 이미지 데이터
 Instance.image_url = ''                                                     # S3에 저장한 이미지 URL
 
-Instance.model_path0 = 'fine_crust_0.6024.pt'                               # 모델 경로: 미세 각질
-Instance.model_path1 = 'excess_sebum_0.6612.pt'                             # 모델 경로: 피지 과다
-Instance.model_path2 = 'erythema_between_hair_follicles_0.7573.pt'          # 모델 경로: 모낭 사이 홍반
-Instance.model_path3 = 'erythema_pustules_0.7234.pt'                        # 모델 경로: 모낭 홍반 농포
-Instance.model_path4 = 'dandruff_0.7468.pt'                                 # 모델 경로: 비듬
-Instance.model_path5 = 'hair_loss_0.7712.pt'                                # 모델 경로: 탈모
+Instance.model_path0 = 'fine_crust.pt'                               # 모델 경로: 미세 각질
+Instance.model_path1 = 'excess_sebum.pt'                             # 모델 경로: 피지 과다
+Instance.model_path2 = 'erythema_between_hair_follicles.pt'          # 모델 경로: 모낭 사이 홍반
+Instance.model_path3 = 'erythema_pustules.pt'                        # 모델 경로: 모낭 홍반 농포
+Instance.model_path4 = 'dandruff.pt'                                 # 모델 경로: 비듬
+Instance.model_path5 = 'hair_loss.pt'                                # 모델 경로: 탈모
 
 Instance.class_names = [0, 1, 2, 3]                                         # 예측 클래스 이름(0,1,2,3)
 Instance.result = [-1, -1, -1, -1, -1, -1]                                  # 예측 결과
@@ -142,12 +142,7 @@ class Survey(Resource):
         
         # DB에 결과 데이터 저장
         db_save_survey()
-
-        # 동성, 동나이대 대비 백분위 계산
-        # percentile()
-
-        # 합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모
-        # return jsonify({'total': f"합계:{Instance.member_percentile[0]}", 'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"})
-
+        
+    
 if __name__ == '__main__':
     app.run(debug=True)
