@@ -16,9 +16,11 @@ from scipy.stats import norm
 
 
 # 데이터프레임에서 사용자 그룹의 해당 지표에 대한 평균, 표준편차 추출
-def get_var(idx, member_group):
+def get_var(idx, member_group, avgs):
     average = member_group['Average'].values[idx]
     std_dev = member_group['Standard Deviation'].values[idx]
+    if idx != 0:
+        avgs[idx-1] = average
 
     return average, std_dev
 
@@ -42,15 +44,16 @@ def percentile():
     gender_group = gender_dict.get(Instance.member_gender)
 
     average = 0
-    variance = 0
     std_dev = 0
+
+    avgs = [-1, -1, -1, -1, -1, -1]
 
     # 데이터프레임에서 사용자그룹 추출
     member_group = average_df[(average_df['Age'] == age_group) & (average_df['Gender'] == gender_group)]
 
     # 사용자 그룹의 해당 지표에 대한 평균, 표준편차 추출
     for i in range(7):
-        average, std_dev = get_var(i, member_group)
+        average, std_dev = get_var(i, member_group, avgs)
 
         # 표준 편차가 0이거나 NaN이 아닌 경우에 백분위 계산
         if std_dev != 0 and not pd.isna(std_dev):
@@ -60,6 +63,8 @@ def percentile():
         # 표준편자가 0이거나 NaN인 경우
         else:
             Instance.member_percentile[i] = -1
+
+    return avgs
 
 
 
