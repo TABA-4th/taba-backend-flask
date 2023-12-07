@@ -78,8 +78,8 @@ class Image(Resource):
         for i in range(6):
             predict(i)
         
-        # 동성, 동나이대 대비 백분위 계산
-        percentile()
+        # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
+        averages = percentile()
 
         # 제품 타입 2가지
         product()
@@ -101,7 +101,9 @@ class Image(Resource):
                             'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 
                             'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 
                             'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 
-                            'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}"
+                            'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}",
+
+                            'avgClass': averages
                         })
 
 @survey_analysis_api.route('/')
