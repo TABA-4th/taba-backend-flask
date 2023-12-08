@@ -30,7 +30,7 @@ Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                # 사용자
 Instance.file_data = ''                                              # 사용자가 업로드한 이미지 데이터
 Instance.image_url = ''                                              # S3에 저장한 이미지 URL
 
-Instance.validation_model_path = 'init_thresh.pt'                    # 모델 경로 (사진 유효성 검사)
+# Instance.validation_model_path = 'init_thresh.pt'                    # 모델 경로 (사진 유효성 검사)
 Instance.model_path0 = 'fine_crust.pt'                               # 모델 경로: 미세 각질
 Instance.model_path1 = 'excess_sebum.pt'                             # 모델 경로: 피지 과다
 Instance.model_path2 = 'erythema_between_hair_follicles.pt'          # 모델 경로: 모낭 사이 홍반
