@@ -142,6 +142,8 @@ class Survey(Resource):
         
         # DB에 결과 데이터 저장
         db_save_survey()
+
+        return jsonify({'recommend_or_not' : Instance.member_recommend_or_not})
         
     
 if __name__ == '__main__':
