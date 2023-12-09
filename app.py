@@ -71,9 +71,9 @@ class Image(Resource):
             return 'No member_nickname data', 400
         
         # 사진 유효성 검사
-        val = validate_image()
-        if val == 0:
-            return 'Invalid photo', 400
+        # val = validate_image()
+        # if val == 0:
+        #     return 'Invalid photo', 400
 
         # 현재 시간
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
