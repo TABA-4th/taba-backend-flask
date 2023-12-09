@@ -19,7 +19,7 @@ class SharedData:
         self.url_time = None                # url 이름에 사용할 시간
         self.db_time = None                 # DB에 저장할 시간
 
-#         self.validation_model_path = None   # 모델 경로 (사진 유효성 검사)
+        self.validation_model_path = None   # 모델 경로 (사진 유효성 검사)
         self.model_path0 = None             # 모델 경로 (미세 각질)
         self.model_path1 = None             # 모델 경로 (피지 과다)
         self.model_path2 = None             # 모델 경로 (모낭 사이 홍반)

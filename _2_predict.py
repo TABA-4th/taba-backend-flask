@@ -15,13 +15,8 @@ def random_transforms(tensor):
 
 def predict(idx):
     transform = transforms.Compose([
-    transforms.RandomHorizontalFlip(p=0.5),
-    transforms.RandomVerticalFlip(p=0.5),
-    transforms.RandomRotation(20),
-    transforms.RandomAffine(0, shear=15, scale=(0.8, 1.2)),
     transforms.Resize([int(224), int(224)], interpolation=4),
     transforms.ToTensor(),
-    transforms.Lambda(random_transforms),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 

@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request, render_template, make_response
 from datetime import datetime
 from pytz import timezone
 from shared_data import Instance
-# from _0_validation import validate_image
+from _0_validation import validate_image
 from _1_upload import upload
 from _2_predict import predict
 from _3_db_save_image import db_save_image
@@ -30,7 +30,7 @@ Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                # 사용자
 Instance.file_data = ''                                              # 사용자가 업로드한 이미지 데이터
 Instance.image_url = ''                                              # S3에 저장한 이미지 URL
 
-# Instance.validation_model_path = 'init_thresh.pt'                    # 모델 경로 (사진 유효성 검사)
+Instance.validation_model_path = 'init_thresh.pt'                    # 모델 경로 (사진 유효성 검사)
 Instance.model_path0 = 'fine_crust.pt'                               # 모델 경로: 미세 각질
 Instance.model_path1 = 'excess_sebum.pt'                             # 모델 경로: 피지 과다
 Instance.model_path2 = 'erythema_between_hair_follicles.pt'          # 모델 경로: 모낭 사이 홍반
@@ -70,10 +70,10 @@ class Image(Resource):
         if not Instance.member_nickname:
             return 'No member_nickname data', 400
         
-        # val = validate_image(Instance.validation_model_path, Instance.file_data)
+        # 사진 유효성 검사
+        # val = validate_image()
         # if val == 0:
-        #     return 'Invalid photo', 400 # 유효하지 않은 사진
-        
+        #     return 'Invalid photo', 400
 
         # 현재 시간
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
@@ -84,6 +84,12 @@ class Image(Resource):
         # 이미지 예측
         for i in range(6):
             predict(i)
+
+        temp = Instance.result[3]
+        Instance.result[3] = Instance.result[5]
+        Instance.result[5] = Instance.result[4]
+        Instance.result[4] = temp
+
         
         # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
         averages = percentile()
