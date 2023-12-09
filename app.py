@@ -84,6 +84,12 @@ class Image(Resource):
         # 이미지 예측
         for i in range(6):
             predict(i)
+
+        temp = Instance.result[3]
+        Instance.result[3] = Instance.result[5]
+        Instance.result[5] = Instance.result[4]
+        Instance.result[4] = temp
+
         
         # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
         averages = percentile()
