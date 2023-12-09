@@ -182,6 +182,7 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/flask
 
 # AI Model
+init_thresh.pt
 fine_crust.pt
 excess_sebum.pt
 erythema_between_hair_follicles.pt

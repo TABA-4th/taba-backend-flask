@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request, render_template, make_response
 from datetime import datetime
 from pytz import timezone
 from shared_data import Instance
+# from _0_validation import validate_image
 from _1_upload import upload
 from _2_predict import predict
 from _3_db_save_image import db_save_image
@@ -16,19 +17,20 @@ from flask_restx import Api, Resource, reqparse
 from flask_cors import CORS
 
 # 전역변수 값 설정 
-Instance.member_id = 4                                                      # 사용자 아이디, 임시값 4s
-Instance.member_nickname = ''                                               # 사용자 닉네임 초기화
-Instance.member_age = 20                                                    # 사용자 나이, 임시값 20
-Instance.member_gender = '남자'                                              # 사용자 성별, 임시값 남자
-Instance.member_use_age_term = ''                                           # 사용자 샴푸 사용 빈도
-Instance.member_perm_term = ''                                              # 사용자 파마 빈도
-Instance.member_dye_term = ''                                               # 사용자 염색 빈도
-Instance.member_recommend_or_not = ''                                       # 사용자 제품 추천 여부
-Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                       # 사용자 평균 대비 퍼센트 [합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
+Instance.member_id = 4                                               # 사용자 아이디, 임시값 4s
+Instance.member_nickname = ''                                        # 사용자 닉네임 초기화
+Instance.member_age = 20                                             # 사용자 나이, 임시값 20
+Instance.member_gender = '남자'                                       # 사용자 성별, 임시값 남자
+Instance.member_use_age_term = ''                                    # 사용자 샴푸 사용 빈도
+Instance.member_perm_term = ''                                       # 사용자 파마 빈도
+Instance.member_dye_term = ''                                        # 사용자 염색 빈도
+Instance.member_recommend_or_not = ''                                # 사용자 제품 추천 여부
+Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                # 사용자 평균 대비 퍼센트 [합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
 
-Instance.file_data = ''                                                     # 사용자가 업로드한 이미지 데이터
-Instance.image_url = ''                                                     # S3에 저장한 이미지 URL
+Instance.file_data = ''                                              # 사용자가 업로드한 이미지 데이터
+Instance.image_url = ''                                              # S3에 저장한 이미지 URL
 
+# Instance.validation_model_path = 'init_thresh.pt'                    # 모델 경로 (사진 유효성 검사)
 Instance.model_path0 = 'fine_crust.pt'                               # 모델 경로: 미세 각질
 Instance.model_path1 = 'excess_sebum.pt'                             # 모델 경로: 피지 과다
 Instance.model_path2 = 'erythema_between_hair_follicles.pt'          # 모델 경로: 모낭 사이 홍반
@@ -36,8 +38,8 @@ Instance.model_path3 = 'erythema_pustules.pt'                        # 모델 �
 Instance.model_path4 = 'dandruff.pt'                                 # 모델 경로: 비듬
 Instance.model_path5 = 'hair_loss.pt'                                # 모델 경로: 탈모
 
-Instance.class_names = [0, 1, 2, 3]                                         # 예측 클래스 이름(0,1,2,3)
-Instance.result = [-1, -1, -1, -1, -1, -1]                                  # 예측 결과
+Instance.class_names = [0, 1, 2, 3]                                  # 예측 클래스 이름(0,1,2,3)
+Instance.result = [-1, -1, -1, -1, -1, -1]                           # 예측 결과
 
 app = Flask(__name__)
 # 최대 8MB로 파일 업로드 용량 제한
@@ -68,6 +70,11 @@ class Image(Resource):
         if not Instance.member_nickname:
             return 'No member_nickname data', 400
         
+        # val = validate_image(Instance.validation_model_path, Instance.file_data)
+        # if val == 0:
+        #     return 'Invalid photo', 400 # 유효하지 않은 사진
+        
+
         # 현재 시간
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
 
@@ -95,13 +102,13 @@ class Image(Resource):
                             "neutral": Instance.effect1 == "neutral" or Instance.effect2 == "neutral",
                             "loss": Instance.effect1 == "loss" or Instance.effect2 == "loss",
 
-                            'total': f"합계:{Instance.member_percentile[0]}", 
-                            'FINE_DEAD_SKIN_CELLS': f"미세각질:{Instance.member_percentile[1]}",
-                            'EXCESS_SEBUM': f"피지과다:{Instance.member_percentile[2]}", 
-                            'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': f"모낭사이홍반:{Instance.member_percentile[3]}", 
-                            'ERYTHEMA_PUSTULES': f"모낭홍반농포:{Instance.member_percentile[4]}", 
-                            'DANDRUFF': f"비듬:{Instance.member_percentile[5]}", 
-                            'HAIR_LOSS': f"탈모:{Instance.member_percentile[6]}",
+                            'total': Instance.member_percentile[0], 
+                            'FINE_DEAD_SKIN_CELLS': Instance.member_percentile[1],
+                            'EXCESS_SEBUM': Instance.member_percentile[2], 
+                            'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': Instance.member_percentile[3], 
+                            'ERYTHEMA_PUSTULES': Instance.member_percentile[4], 
+                            'DANDRUFF': Instance.member_percentile[5], 
+                            'HAIR_LOSS': Instance.member_percentile[6],
 
                             'avgClass': averages
                         })
