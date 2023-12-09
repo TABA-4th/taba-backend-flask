@@ -14,8 +14,8 @@ def validate_image():
     ])
 
     # 파일 데이터를 메모리에 로드
-    # file_data_buffer = io.BytesIO(image_path)
-    image = Image.open(Instance.file_data).convert('RGB')
+    file_data_buffer = io.BytesIO(Instance.file_data)
+    image = Image.open(file_data_buffer).convert('RGB')
     input_tensor = transforms_train(image).unsqueeze(0)
 
     model = torch.load(Instance.validation_model_path, map_location=torch.device('cpu'))
