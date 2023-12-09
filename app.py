@@ -85,14 +85,13 @@ class Image(Resource):
         for i in range(6):
             predict(i)
 
+        # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
+        averages = percentile()
+
         temp = Instance.result[3]
         Instance.result[3] = Instance.result[4]
         Instance.result[4] = Instance.result[5]
         Instance.result[5] = temp
-
-        
-        # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
-        averages = percentile()
 
         # 제품 타입 2가지
         product()
