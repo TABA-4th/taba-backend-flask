@@ -63,6 +63,11 @@ def percentile():
         # 표준편자가 0이거나 NaN인 경우
         else:
             Instance.member_percentile[i] = -1
+            
+    temp = avgs[3]
+    avgs[3] = avgs[5]
+    avgs[5] = avgs[4]
+    avgs[4] = temp
 
     return avgs
 

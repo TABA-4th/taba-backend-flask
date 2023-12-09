@@ -71,9 +71,9 @@ class Image(Resource):
             return 'No member_nickname data', 400
         
         # 사진 유효성 검사
-        val = validate_image()
-        if val == 0:
-            return 'Invalid photo', 400
+        # val = validate_image()
+        # if val == 0:
+        #     return 'Invalid photo', 400
 
         # 현재 시간
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
@@ -84,6 +84,12 @@ class Image(Resource):
         # 이미지 예측
         for i in range(6):
             predict(i)
+
+        temp = Instance.result[3]
+        Instance.result[3] = Instance.result[5]
+        Instance.result[5] = Instance.result[4]
+        Instance.result[4] = temp
+
         
         # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
         averages = percentile()
