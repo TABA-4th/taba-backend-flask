@@ -23,12 +23,12 @@ class SharedData:
         self.model_path0 = None             # 모델 경로 (미세 각질)
         self.model_path1 = None             # 모델 경로 (피지 과다)
         self.model_path2 = None             # 모델 경로 (모낭 사이 홍반)
-        self.model_path3 = None             # 모델 경로 (모낭 홍반 농포)
-        self.model_path4 = None             # 모델 경로 (비듬)
-        self.model_path5 = None             # 모델 경로 (탈모)
+        self.model_path3 = None             # 모델 경로 (비듬)
+        self.model_path4 = None             # 모델 경로 (탈모)
+        self.model_path5 = None             # 모델 경로 (모낭 홍반 농포)
 
         self.class_names = None             # 예측 클래스 이름(0,1,2,3)
-        self.result = [-1, -1, -1, -1, -1, -1]  # 예측 결과: [미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
+        self.result = [-1, -1, -1, -1, -1, -1]  # 예측 결과: [미세각질, 피지과다, 모낭사이홍반, 비듬, 탈모, 모낭홍반농포]
 
         self.effect1 = None                 # 제품타입1
         self.effect2 = None                 # 제품타입2

@@ -30,7 +30,7 @@ def percentile():
     with open( "average_df.pkl", "rb" ) as file:
         average_df = pickle.load(file)
 
-    raw_score = [-1, -1, -1, -1, -1, -1, -1]        # 원점수: [합계, 미세각질, 피지과다, 모낭사이홍반, 비듬, 탈모, 모낭홍반농포,]
+    raw_score = [-1, -1, -1, -1, -1, -1, -1]        # 원점수: [합계, 미세각질, 피지과다, 모낭사이홍반, 비듬, 탈모, 모낭홍반농포]
     Instance.member_percentile = [-1, -1, -1, -1, -1, -1, -1]
 
     raw_score[0] = sum(map(int, Instance.result))   # 합계
