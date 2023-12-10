@@ -36,7 +36,7 @@ def db_save_image():
         topPercentage = ' '.join(map(str, Instance.member_percentile))
 
         # 사용자 ID, 모델 출력 결과, 날짜를 저장하는 쿼리
-        sql = "INSERT INTO diagnosis_result (RESULT_ID, MEMBER_ID, DIAGNOSIS_DATE, FINE_DEAD_SKIN_CELLS, EXCESS_SEBUM, ERYTHEMA_BETWEEN_HAIR_FOLLICLES,  ERYTHEMA_PUSTULES, DANDRUFF, HAIR_LOSS, IMAGE_URL, TOP_PERCENTAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        sql = "INSERT INTO diagnosis_result (RESULT_ID, MEMBER_ID, DIAGNOSIS_DATE, FINE_DEAD_SKIN_CELLS, EXCESS_SEBUM, ERYTHEMA_BETWEEN_HAIR_FOLLICLES, DANDRUFF, HAIR_LOSS, ERYTHEMA_PUSTULES, IMAGE_URL, TOP_PERCENTAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         values = (result_id, Instance.member_id, Instance.db_time, Instance.result[0], Instance.result[1], Instance.result[2], Instance.result[3], Instance.result[4], Instance.result[5], Instance.image_url, topPercentage)
         curs.execute(sql, values)
     
