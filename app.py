@@ -106,9 +106,9 @@ class Image(Resource):
                             'FINE_DEAD_SKIN_CELLS': Instance.member_percentile[1],
                             'EXCESS_SEBUM': Instance.member_percentile[2], 
                             'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': Instance.member_percentile[3], 
-                            'ERYTHEMA_PUSTULES': Instance.member_percentile[4], 
-                            'DANDRUFF': Instance.member_percentile[5], 
-                            'HAIR_LOSS': Instance.member_percentile[6],
+                            'DANDRUFF': Instance.member_percentile[4], 
+                            'HAIR_LOSS': Instance.member_percentile[5],
+                            'ERYTHEMA_PUSTULES': Instance.member_percentile[6], 
 
                             'avgClass': averages
                         })
