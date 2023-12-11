@@ -25,7 +25,7 @@ Instance.member_use_age_term = ''                                    # 사용자
 Instance.member_perm_term = ''                                       # 사용자 파마 빈도
 Instance.member_dye_term = ''                                        # 사용자 염색 빈도
 Instance.member_recommend_or_not = ''                                # 사용자 제품 추천 여부
-Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                # 사용자 평균 대비 퍼센트 [합계, 미세각질, 피지과다, 모낭사이홍반, 모낭홍반농포, 비듬, 탈모]
+Instance.member_percentile = [-1, -1, -1, -1, -1, -1]                # 사용자 평균 대비 퍼센트 [합계, 미세각질, 피지과다, 모낭사이홍반,비듬, 탈모, 모낭홍반농포]
 
 Instance.file_data = ''                                              # 사용자가 업로드한 이미지 데이터
 Instance.image_url = ''                                              # S3에 저장한 이미지 URL
@@ -34,9 +34,9 @@ Instance.validation_model_path = 'init_thresh.pt'                    # 모델 �
 Instance.model_path0 = 'fine_crust.pt'                               # 모델 경로: 미세 각질
 Instance.model_path1 = 'excess_sebum.pt'                             # 모델 경로: 피지 과다
 Instance.model_path2 = 'erythema_between_hair_follicles.pt'          # 모델 경로: 모낭 사이 홍반
-Instance.model_path3 = 'erythema_pustules.pt'                        # 모델 경로: 모낭 홍반 농포
-Instance.model_path4 = 'dandruff.pt'                                 # 모델 경로: 비듬
-Instance.model_path5 = 'hair_loss.pt'                                # 모델 경로: 탈모
+Instance.model_path3 = 'dandruff.pt'                                 # 모델 경로: 비듬
+Instance.model_path4 = 'hair_loss.pt'                                # 모델 경로: 탈모
+Instance.model_path5 = 'erythema_pustules.pt'                        # 모델 경로: 모낭 홍반 농포
 
 Instance.class_names = [0, 1, 2, 3]                                  # 예측 클래스 이름(0,1,2,3)
 Instance.result = [-1, -1, -1, -1, -1, -1]                           # 예측 결과
@@ -84,7 +84,7 @@ class Image(Resource):
         # 이미지 예측
         for i in range(6):
             predict(i)
-        
+
         # 동성, 동나이대 대비 백분위 계산, 전체 평균 반환
         averages = percentile()
 
@@ -106,9 +106,9 @@ class Image(Resource):
                             'FINE_DEAD_SKIN_CELLS': Instance.member_percentile[1],
                             'EXCESS_SEBUM': Instance.member_percentile[2], 
                             'ERYTHEMA_BETWEEN_HAIR_FOLLICLES': Instance.member_percentile[3], 
-                            'ERYTHEMA_PUSTULES': Instance.member_percentile[4], 
-                            'DANDRUFF': Instance.member_percentile[5], 
-                            'HAIR_LOSS': Instance.member_percentile[6],
+                            'DANDRUFF': Instance.member_percentile[4], 
+                            'HAIR_LOSS': Instance.member_percentile[5],
+                            'ERYTHEMA_PUSTULES': Instance.member_percentile[6], 
 
                             'avgClass': averages
                         })
