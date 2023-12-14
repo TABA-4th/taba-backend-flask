@@ -17,6 +17,7 @@
     <input type="text" id="perm_term" placeholder="파마 주기"><br/>
     <input type="text" id="dye_term" placeholder="염색 주기"><br/>
     <input type="text" id="recommend_or_not" placeholder="추천받는다면 1, 아니면 0 입력"><br/>
+    <input type="text" id="reuse_image" placeholder="추가 학습에 동의한다면 1, 아니면 0 입력"><br/>
     <button type="button" onclick="upload()">업로드</button>
   </form>
 
@@ -35,6 +36,7 @@
       formData.append('perm_term', document.getElementById('perm_term').value);
       formData.append('dye_term', document.getElementById('dye_term').value);
       formData.append('recommend_or_not', document.getElementById('recommend_or_not').value);
+      formData.append('reuse_image', document.getElementById('reuse_image').value);
   
       axios.post('http://localhost:5000/survey', formData, {
       })

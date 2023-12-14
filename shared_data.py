@@ -10,6 +10,7 @@ class SharedData:
         self.member_perm_term = None        # 사용자 파마 빈도
         self.member_dye_term = None         # 사용자 염색 빈도
         self.member_recommend_or_not = None # 사용자 제품 추천 여부
+        self.member_reuse_image = None      # 학습 모델에 사용자의 이미지 추가 학습 동의 여부
         self.member_percentile = None       # 사용자 평균 대비 퍼센트
 
         self.file_data = None               # 사용자가 업로드한 이미지 데이터

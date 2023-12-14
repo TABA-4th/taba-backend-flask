@@ -144,12 +144,16 @@ class Survey(Resource):
         if not Instance.member_recommend_or_not:
             return 'No member_recommend_or_not data', 400
         
+        Instance.member_reuse_image = request.form['reuse_image']
+        if not Instance.member_reuse_image:
+            return 'No reuse_image data', 400
+        
         # 현재 시간
         Instance.now = datetime.now(timezone('Asia/Seoul'))
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
         
         # DB에 결과 데이터 저장
-        db_save_survey()
+        # db_save_survey()
 
         return jsonify({'recommend_or_not' : Instance.member_recommend_or_not})
         
