@@ -11,6 +11,9 @@ def upload():
         aws_access_key_id=AWS_ACCESS_KEY,
         aws_secret_access_key=AWS_SECRET_ACCESS_KEY
     )
-    new_filename = Instance.url_time + '.jpeg'
+    if (Instance.member_reuse_image == '1'):
+        new_filename = Instance.url_time + 'reuse' + '.jpeg'
+    else:
+        new_filename = Instance.url_time + '.jpeg'
     s3.upload_fileobj(io.BytesIO(Instance.file_data), AWS_S3_BUCKET_NAME, new_filename)
     Instance.image_url = f'https://{AWS_S3_BUCKET_NAME}.s3.{AWS_S3_BUCKET_REGION}.amazonaws.com/{new_filename}'
