@@ -153,7 +153,7 @@ class Survey(Resource):
         Instance.url_time = re.sub(r"[^0-9]", "", str(Instance.now))
         
         # DB에 결과 데이터 저장
-        # db_save_survey()
+        db_save_survey()
 
         return jsonify({'recommend_or_not' : Instance.member_recommend_or_not})
         
