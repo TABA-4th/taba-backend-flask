@@ -20,6 +20,12 @@
 니모내모는, 두피 상태를 자동으로 기록하여
 <b>두피케어 루틴</b>을 확인할 수 있도록 도와드립니다.</br></br>
 
+
+## 니모내모 사이트 🔗
+👉 nimonemo.site
+
+</br>
+
 ## Team Nimonomo (Timonemo) 👪
 |<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/2dcc3ed2-6375-4a21-8f1a-daf32ba34cad" width="100px" height="120px">|<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/e6385cbd-6363-4e33-95a8-008efc54a469" width="130px" height="120px">|<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/ff4aafb8-e1df-428e-be7e-1d2b1f976a54" width="100px" height="120px">|<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/ee3e359b-819e-4b1e-8620-b21a547db561" width="120px" height="120px">|<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/e6a1292d-8898-4e3f-8f17-bc7b36a3953e" width="120px" height="120px">|<img src="https://github.com/TABA-4th/taba-frontend/assets/120318020/8fc41238-82ce-48f2-8a19-0d3e4feff9db" width="100px" height="120px">|
 |---|---|---|---|---|---|
